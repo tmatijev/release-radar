@@ -1,0 +1,260 @@
+/* Modern font import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+/* Reset and base styles */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-width: 380px;
+  background: #f8fafc;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.popup {
+  width: 380px;
+  min-height: 400px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  box-sizing: border-box;
+}
+
+/* Header styles */
+h1 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* Search form */
+.search-form {
+  margin: 16px 0;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper input {
+  width: 100%;
+  padding: 8px 36px 8px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.search-form button[type="submit"] {
+  height: 36px;
+  padding: 0 16px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #e2e8f0;
+  border: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  color: #64748b;
+  padding: 0;
+}
+
+/* Lists */
+.today-list,
+.subscriptions-list,
+.results-list,
+.subscriptions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.result-item,
+.today-item,
+.subscriptions li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid #e2e8f0;
+  background: white;
+}
+
+.result-info,
+.today-info,
+.subscription-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.poster-thumb {
+  width: 45px;
+  height: 68px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.poster-placeholder {
+  width: 45px;
+  height: 68px;
+  background: #f1f5f9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Info text */
+.result-info h3,
+.today-info h3,
+.subscription-info h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-info p,
+.today-info p,
+.subscription-info p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.release-info {
+  color: #3b82f6 !important;
+  font-weight: 500 !important;
+}
+
+/* Buttons */
+button {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: #2563eb;
+}
+
+button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.remove-btn {
+  background: #ef4444;
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.remove-btn:hover {
+  background: #dc2626;
+}
+
+/* Sections */
+.airing-today {
+  margin: 16px 0;
+  padding: 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.section-header h2 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.badge {
+  background: #ef4444;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Error and empty states */
+.error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 16px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Smooth scrolling */
+.popup {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.clear-results-btn {
+  margin-bottom: 12px;
+}

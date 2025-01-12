@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Release Radar",
+  "version": "1.16.2",
+  "description": "Track movie and TV series releases and get notified about new episodes",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; connect-src 'self' https://api.themoviedb.org https://www.googleapis.com https://accounts.google.com https://image.tmdb.org"
+  },
+  "oauth2": {
+    "client_id": "%VITE_GOOGLE_CLIENT_ID%",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar.readonly",
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  },
+  "permissions": [
+    "identity",
+    "identity.email",
+    "storage",
+    "notifications",
+    "alarms",
+    "background"
+  ],
+  "host_permissions": [
+    "https://api.themoviedb.org/*",
+    "https://image.tmdb.org/*"
+  ]
+} 
