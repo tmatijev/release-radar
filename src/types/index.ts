@@ -13,6 +13,7 @@ export interface Subscription {
   posterUrl?: string | null;
   addedAt: number;
   nextEpisode?: NextEpisode | null;
+  inProduction?: boolean;
 }
 
 export interface UserData {

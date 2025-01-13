@@ -78,7 +78,8 @@ const Popup: React.FC = () => {
       title: result.title,
       releaseDate: result.release_date,
       posterUrl: result.poster_path,
-      nextEpisode: result.next_episode_to_air
+      nextEpisode: result.next_episode_to_air,
+      inProduction: result.in_production
     });
   };
 
@@ -236,8 +237,14 @@ const Popup: React.FC = () => {
                       <h3>{sub.title}</h3>
                       <p>{sub.type.toUpperCase()}</p>
                       <p className="release-info">
-                        {sub.type === 'tv' && sub.nextEpisode ? (
-                          `Next: S${sub.nextEpisode.season_number}E${sub.nextEpisode.episode_number} on ${formatDate(sub.nextEpisode.air_date)}`
+                        {sub.type === 'tv' ? (
+                          sub.nextEpisode ? (
+                            `Next: S${sub.nextEpisode.season_number}E${sub.nextEpisode.episode_number} on ${formatDate(sub.nextEpisode.air_date)}`
+                          ) : sub.inProduction ? (
+                            'New season in production'
+                          ) : (
+                            'Release date TBA'
+                          )
                         ) : sub.releaseDate ? (
                           `Releases on ${formatDate(sub.releaseDate)}`
                         ) : (
