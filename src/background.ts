@@ -1,6 +1,6 @@
 import { Subscription, UserData } from './types';
 
-const CHECK_INTERVAL = 1000 * 60; // Check every minute (for testing)
+const CHECK_INTERVAL = 1000 * 60 * 60; // Check every hour
 
 const formatDate = (date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -171,7 +171,7 @@ setInterval(checkReleases, CHECK_INTERVAL);
 
 // Listen for alarm
 chrome.alarms.create('checkReleases', {
-  periodInMinutes: 1 // Check every minute (for testing)
+  periodInMinutes: 60 // Check every hour
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {
