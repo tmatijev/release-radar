@@ -1,6 +1,6 @@
 {
   "name": "release-radar",
-  "version": "1.16.2",
+  "version": "1.17.0",
   "description": "Chrome extension to track movie and TV series releases",
   "scripts": {
     "dev": "vite",

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Release Radar",
-  "version": "1.16.2",
+  "version": "1.17.0",
   "description": "Track movie and TV series releases and get notified about new episodes",
   "icons": {
     "16": "icons/icon-16.png",
