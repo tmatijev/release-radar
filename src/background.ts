@@ -1,6 +1,6 @@
 import { Subscription, UserData } from './types';
 
-const CHECK_INTERVAL = 1000 * 60 * 60; // Check every hour
+const CHECK_INTERVAL = 1000 * 60; // Check every minute (for testing)
 
 const formatDate = (date: Date): string => {
   return date.toISOString().split('T')[0];
@@ -16,6 +16,60 @@ const shouldNotify = (subscription: Subscription): boolean => {
   }
   
   return false;
+};
+
+const updateNextEpisodeInfo = async (subscription: Subscription): Promise<Subscription> => {
+  if (subscription.type !== 'tv') return subscription;
+
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/tv/${subscription.tmdbId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+          'accept': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`Failed to update next episode for ${subscription.title}`);
+      return subscription;
+    }
+
+    const data = await response.json();
+    return {
+      ...subscription,
+      nextEpisode: data.next_episode_to_air
+    };
+  } catch (error) {
+    console.error(`Error updating next episode for ${subscription.title}:`, error);
+    return subscription;
+  }
+};
+
+const updateAllSubscriptions = async () => {
+  try {
+    const storage = await chrome.storage.sync.get(null);
+    
+    for (const [email, userData] of Object.entries(storage)) {
+      const data = userData as UserData;
+      if (!Array.isArray(data.subscriptions)) continue;
+
+      const updatedSubscriptions = await Promise.all(
+        data.subscriptions.map(updateNextEpisodeInfo)
+      );
+
+      await chrome.storage.sync.set({
+        [email]: {
+          ...data,
+          subscriptions: updatedSubscriptions
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error updating subscriptions:', error);
+  }
 };
 
 const updateBadge = async () => {
@@ -79,6 +133,9 @@ const checkReleases = async () => {
       return;
     }
 
+    // Update next episode information before checking releases
+    await updateAllSubscriptions();
+
     const storage = await chrome.storage.sync.get(null);
     
     if (!storage || typeof storage !== 'object') {
@@ -114,7 +171,7 @@ setInterval(checkReleases, CHECK_INTERVAL);
 
 // Listen for alarm
 chrome.alarms.create('checkReleases', {
-  periodInMinutes: 60 // Check every hour
+  periodInMinutes: 1 // Check every minute (for testing)
 });
 
 chrome.alarms.onAlarm.addListener((alarm) => {

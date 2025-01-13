@@ -2,6 +2,36 @@ import { useState, useEffect } from 'react';
 import type { Subscription, UserData } from '../types';
 import { securityUtils } from '../utils/security';
 
+const updateNextEpisodeInfo = async (subscription: Subscription): Promise<Subscription> => {
+  if (subscription.type !== 'tv') return subscription;
+
+  try {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/tv/${subscription.tmdbId}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+          'accept': 'application/json'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      console.error(`Failed to update next episode for ${subscription.title}`);
+      return subscription;
+    }
+
+    const data = await response.json();
+    return {
+      ...subscription,
+      nextEpisode: data.next_episode_to_air
+    };
+  } catch (error) {
+    console.error(`Error updating next episode for ${subscription.title}:`, error);
+    return subscription;
+  }
+};
+
 export function useSubscriptions(userEmail: string | null) {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -14,8 +44,21 @@ export function useSubscriptions(userEmail: string | null) {
       const result = await chrome.storage.sync.get(userEmail);
       const userData: UserData = result[userEmail] || { email: userEmail, subscriptions: [] };
       
+      // Update next episode information for TV series
+      const updatedSubscriptions = await Promise.all(
+        userData.subscriptions.map(updateNextEpisodeInfo)
+      );
+
+      // Save updated subscriptions back to storage
+      await chrome.storage.sync.set({
+        [userEmail]: {
+          ...userData,
+          subscriptions: updatedSubscriptions
+        }
+      });
+      
       // Sort subscriptions by release date
-      const sortedSubscriptions = userData.subscriptions.sort((a, b) => {
+      const sortedSubscriptions = updatedSubscriptions.sort((a, b) => {
         const dateA = a.type === 'tv' ? a.nextEpisode?.air_date : a.releaseDate;
         const dateB = b.type === 'tv' ? b.nextEpisode?.air_date : b.releaseDate;
         
